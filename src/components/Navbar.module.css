@@ -1,0 +1,13 @@
+.navbar {
+    padding-top: 20px;
+    background-color: rgb(255, 236, 126);
+    padding-block: 20px;
+    padding-left: 20px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: inherit;
+    font-size: 2rem;
+    font-weight: 600;
+}
