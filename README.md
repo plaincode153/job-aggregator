@@ -1,16 +1,47 @@
-# React + Vite
+# Job Aggregator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A work-in-progress job search app built with React and Vite. This is a learning project for practising React components, state, effects, API requests, and routing.
 
-Currently, two official plugins are available:
+The app uses [Arbetsförmedlingen’s JobSearch API](https://jobsearch.api.jobtechdev.se/) to fetch job listings from Platsbanken, Sweden’s public job board.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Current features
 
-## React Compiler
+- Search for jobs by keyword.
+- Display up to 10 results per search.
+- Expand a listing to read its description.
+- Follow links to the original job pages.
+- Show fallback content when listing information is missing.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Work in progress
 
-## Expanding the ESLint configuration
+Filtering is the next planned feature. The app is still being developed, so features and styling may change.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Built with
+
+- React
+- React Router
+- Vite
+- JavaScript
+- CSS Modules
+
+## Run locally
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server and open the local URL shown in the terminal:
+
+```bash
+npm run dev
+```
+
+## Other commands
+
+```bash
+npm run build     # Create a production build in dist
+npm run preview   # Preview the production build locally
+npm run lint      # Run ESLint
+```

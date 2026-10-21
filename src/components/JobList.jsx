@@ -1,5 +1,5 @@
 import styles from "./JobList.module.css"
-import fallbackLogo from "../assets/fallback-logo.png";
+import fallbackLogo from "../assets/fallbackLogo.png";
 
 export function JobList({ jobList }) {
     if (jobList.length === 0) {
