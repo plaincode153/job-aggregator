@@ -6,3 +6,13 @@
 .job {
     padding-bottom: 3rem;
 }
+
+/* image */ 
+
+.job summary img {
+    width: 100px;
+    object-fit: contain;
+}   
+
+/* summary arrow */
+
