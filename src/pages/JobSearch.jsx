@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { jobSearchAPI } from "../api/api";
-import { JobList } from "../components/JobList";
-import styles from "./JobSearch.module.css"
+import { LocationDropdown } from "../components/LocationDropdown.jsx";
+import { JobList } from "../components/joblist.jsx";
+import styles from "./JobSearch.module.css";
+
 
 export function JobSearch() {
     const [query, setQuery] = useState("")
     const [jobList, setJobList] = useState([])
     const [error, setError] = useState(false)
     const [hasSearched, setHasSearched] = useState(false);
+    const [selectedRegionID, setSelectedRegionID] = useState("");
 
     function handleSubmit(event) {
         event.preventDefault()
@@ -19,9 +22,9 @@ export function JobSearch() {
     useEffect(() => {
         let ignore = false
 
-        async function getJobs(query) {
+        async function getJobs(query, selectedRegionID) {
             try {
-                const data = await jobSearchAPI(query)
+                const data = await jobSearchAPI(query, selectedRegionID)
                 if (!ignore) {
                     setJobList(data.hits)
                 }
@@ -31,10 +34,10 @@ export function JobSearch() {
             }
         }
         if (query !== "") {
-            getJobs(query)
+            getJobs(query, selectedRegionID)
         }
         return () => ignore = true
-    }, [query])
+    }, [query, selectedRegionID])
 
     return (
         <div>
@@ -43,6 +46,9 @@ export function JobSearch() {
                 <div>
                     <input id="jobSearch" type="text"></input>
                     <button type="submit">Submit</button>
+                </div>
+                <div id="Location">
+                    <LocationDropdown setSelectedRegionID={setSelectedRegionID} />
                 </div>
             </form>
             <p>{error && "Error"}</p>
