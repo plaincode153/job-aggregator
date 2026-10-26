@@ -5,3 +5,10 @@
 
 }
 
+.loadMore {
+    margin: 2rem;
+    padding: 0.5rem;
+    background-color: rgb(255, 236, 126);
+    cursor: pointer;
+    border: 1px solid #b99a20;
+}

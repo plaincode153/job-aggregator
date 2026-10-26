@@ -20,7 +20,7 @@ export function LocationDropdown({ setSelectedRegionID }) {
                     /* console.log(data) */
                 }
 
-            } catch {
+            } catch (error){
                 console.error(`error fetching from getRegions`, error)
             }
         }

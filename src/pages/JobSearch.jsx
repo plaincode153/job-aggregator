@@ -4,13 +4,15 @@ import { LocationDropdown } from "../components/LocationDropdown.jsx";
 import { JobList } from "../components/joblist.jsx";
 import styles from "./JobSearch.module.css";
 
-
 export function JobSearch() {
     const [query, setQuery] = useState("")
     const [jobList, setJobList] = useState([])
     const [error, setError] = useState(false)
     const [hasSearched, setHasSearched] = useState(false);
     const [selectedRegionID, setSelectedRegionID] = useState("");
+
+    const [offset, setOffset] = useState(0)
+    const [hasMore, setHasMore] = useState(false);
 
     function handleSubmit(event) {
         event.preventDefault()
@@ -22,11 +24,12 @@ export function JobSearch() {
     useEffect(() => {
         let ignore = false
 
-        async function getJobs(query, selectedRegionID) {
+        async function getJobs(query, selectedRegionID, offset, setHasMore) {
             try {
-                const data = await jobSearchAPI(query, selectedRegionID)
+                const data = await jobSearchAPI(query, selectedRegionID, offset, setHasMore)
+
                 if (!ignore) {
-                    setJobList(data.hits)
+                    setJobList((prev) => [...prev, ...data.hits])
                 }
             } catch {
                 setError(true)
@@ -34,10 +37,10 @@ export function JobSearch() {
             }
         }
         if (query !== "") {
-            getJobs(query, selectedRegionID)
+            getJobs(query, selectedRegionID, offset, setHasMore)
         }
         return () => ignore = true
-    }, [query, selectedRegionID])
+    }, [query, selectedRegionID, offset, setHasMore])
 
     return (
         <div>
@@ -53,6 +56,7 @@ export function JobSearch() {
             </form>
             <p>{error && "Error"}</p>
             {hasSearched && <JobList jobList={jobList} />}
+            {hasMore && <button className={styles.loadMore} onClick={() => setOffset((prev) => prev + 20)}>Load More</button>}
         </div>
     )
 }
