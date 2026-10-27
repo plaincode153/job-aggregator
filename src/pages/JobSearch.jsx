@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { jobSearchAPI } from "../api/api";
 import { LocationDropdown } from "../components/LocationDropdown.jsx";
-import { JobList } from "../components/joblist.jsx";
+import { JobList } from "../components/JobList.jsx";
 import styles from "./JobSearch.module.css";
 
 export function JobSearch() {
