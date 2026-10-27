@@ -17,8 +17,13 @@ export function JobSearch() {
     function handleSubmit(event) {
         event.preventDefault()
         const input = document.getElementById("jobSearch")
-        setQuery(input.value)
-        setHasSearched(true)
+
+        if (query !== input.value) {
+            setJobList([])
+            setQuery(input.value)
+            setOffset(0)
+            setHasSearched(true)
+        }
     }
 
     useEffect(() => {
@@ -51,7 +56,7 @@ export function JobSearch() {
                     <button type="submit">Submit</button>
                 </div>
                 <div id="Location">
-                    <LocationDropdown setSelectedRegionID={setSelectedRegionID} />
+                    <LocationDropdown setSelectedRegionID={setSelectedRegionID} setOffset={setOffset} setJobList={setJobList} />
                 </div>
             </form>
             <p>{error && "Error"}</p>

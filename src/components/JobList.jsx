@@ -8,7 +8,6 @@ export function JobList({ jobList }) {
     return (
         <div className={styles.jobList}>
             {jobList.map((job) => {
-                /* console.log(job)) */
 
                 return (
                     <details className={styles.job} key={job.id}>

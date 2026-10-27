@@ -1,10 +1,12 @@
 import { getRegionsAPI } from "../api/api"
 import { useEffect, useState } from "react"
 
-export function LocationDropdown({ setSelectedRegionID }) {
+export function LocationDropdown({ setSelectedRegionID, setOffset, setJobList }) {
     const [regions, setRegions] = useState([])
 
     function handleChange(event) {
+        setOffset(0)
+        setJobList([])
         setSelectedRegionID(event.target.value)
     }
 

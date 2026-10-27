@@ -8,6 +8,8 @@ The app uses [Arbetsförmedlingen’s JobSearch API](https://jobsearch.api.jobte
 
 - Search for jobs by keyword.
 - Select a region to request jobs for that location.
+- Start fresh results when the keyword or region changes, resetting the pagination offset.
+- Keep current results when the same keyword is submitted again.
 - Fetch jobs in batches of up to 20.
 - Load more jobs while keeping the results already displayed.
 - Hide the Load More button when the API indicates there are no more results.
@@ -19,7 +21,7 @@ The app uses [Arbetsförmedlingen’s JobSearch API](https://jobsearch.api.jobte
 
 This is an early work in progress, focused on learning and building the app's logic. Styling is intentionally basic and will be polished later.
 
-Search and region changes do not yet clear previously loaded results or reset the offset. Improving that behaviour is the next step, so changing searches or regions can currently mix results or skip earlier matches.
+Currently, a keyword search is required before jobs are fetched. After searching, changing the region fetches fresh results for that keyword and location. Browsing jobs by region without entering a keyword is a possible next feature.
 
 ## Built with
 
