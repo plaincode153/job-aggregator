@@ -1,13 +1,37 @@
-import { getRegionsAPI } from "../api/api"
+import { getRegions as getRegionsAPI, getMunicipalities as getMunicipalitiesAPI } from "../api/api"
 import { useEffect, useState } from "react"
+import styles from "./LocationDropdown.module.css"
 
-export function LocationDropdown({ setSelectedRegionID, setOffset, setJobList }) {
+export function LocationDropdown({ selectedRegionID, setSelectedRegionID, setOffset, setJobList, selectedMunicipalityIDs, setSelectedMunicipalityIDs, setSearchVersion }) {
     const [regions, setRegions] = useState([])
+    const [isOpen, setIsOpen] = useState(false);
+    const [previewRegionID, setPreviewRegionID] = useState()
+    const [currentMunicipalities, setCurrentMunicipalities] = useState([])
 
-    function handleChange(event) {
+    function handleMunicipalityChange(municipalityID) {
         setOffset(0)
         setJobList([])
-        setSelectedRegionID(event.target.value)
+        setSelectedMunicipalityIDs((prev) =>
+            prev.includes(municipalityID)
+                ? prev.filter((id) => id !== municipalityID)
+                : [...prev, municipalityID]
+        )
+        setSelectedRegionID()
+        setSearchVersion((prev) => prev + 1)
+    }
+
+    function selectWholeRegion(regionID) {
+        setOffset(0)
+        setJobList([])
+        setSelectedRegionID(regionID)
+        setSelectedMunicipalityIDs([])
+        setSearchVersion((prev) => prev + 1)
+    }
+
+    function clearAllLocations() {
+        setSelectedMunicipalityIDs([])
+        setSelectedRegionID("")
+        setJobList([])
     }
 
     useEffect(() => {
@@ -19,29 +43,79 @@ export function LocationDropdown({ setSelectedRegionID, setOffset, setJobList })
 
                 if (!ignore) {
                     setRegions(data)
-                    /* console.log(data) */
                 }
-
-            } catch (error){
+            } catch (error) {
                 console.error(`error fetching from getRegions`, error)
             }
         }
+
+        async function getMunicipalities(previewRegionID) {
+            try {
+                const data = await getMunicipalitiesAPI(previewRegionID)
+                setCurrentMunicipalities(data)
+            } catch {
+                console.error(`error fetching from getMunicipalities`, error)
+            }
+        }
+
         getRegions()
+        getMunicipalities(previewRegionID)
         return () => ignore = true
-    }, [])
+    }, [previewRegionID])
 
     return (
-        <select onChange={handleChange}>
-            <option value="">
-                All regions
-            </option>
-            {regions.map((region) => {
-                return (
-                    <option key={region["taxonomy/id"]} value={region["taxonomy/id"]}>
-                        {region["taxonomy/preferred-label"]}
-                    </option>
-                )
-            })}
-        </select>
+        <div className={styles.picker}>
+            <button onClick={() => setIsOpen(!isOpen)} className={styles.trigger}>
+                <span>📍 Select your locations</span>
+                <span>{isOpen ? "▲" : "▼"}</span>
+            </button>
+            {isOpen &&
+                <div className="styles.dropdown">
+                    <div>
+                        <button onClick={clearAllLocations}>Clear all locations</button>
+                    </div>
+                    <div className={styles.columns}>
+                        <div className="regions">
+                            <ul className={styles.locationList}>
+                                {regions.map((region) => {
+                                    return (
+                                        <li>
+                                            <button onMouseEnter={() => setPreviewRegionID(region["taxonomy/id"])}>
+                                                <span>{region["taxonomy/definition"]}</span>
+                                            </button>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </div>
+                        <div className="municipalities">
+                            <ul className={styles.locationList}>
+                                <li>
+                                    <button
+                                        className={styles.location}
+                                        aria-pressed={Boolean(selectedRegionID) && selectedRegionID === previewRegionID}
+                                        onClick={() => selectWholeRegion(previewRegionID)}>
+                                        <span>Select whole region</span>
+                                    </button>
+                                </li>
+                                {currentMunicipalities.map((municipality) => {
+                                    return (
+                                        <li>
+                                            <button
+                                                className={styles.location}
+                                                aria-pressed={selectedMunicipalityIDs.includes(municipality["taxonomy/id"])}
+                                                onClick={() => handleMunicipalityChange(municipality["taxonomy/id"])}>
+                                                <span>{municipality["taxonomy/definition"]}</span>
+                                            </button>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div >
     )
 }

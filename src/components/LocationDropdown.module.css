@@ -1,0 +1,36 @@
+.picker {
+    margin-top: var(--space-small);
+
+}
+
+.trigger {
+    cursor: pointer;
+    border: 1px;
+    background: var(--color-grey);
+    padding: 3px;
+}
+
+.columns {
+    display: flex;
+    flex-direction: row;
+}
+
+.location {
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+
+.locationList {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 600px;
+    list-style: none;
+}
+
+.location[aria-pressed="true"] {
+    background-color: var(--color-yellow, #ffeb80);
+    color: #1f2937;
+    border: 2px solid #665000;
+    font-weight: 700;
+}

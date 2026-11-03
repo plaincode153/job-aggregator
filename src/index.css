@@ -4,6 +4,19 @@
   box-sizing: border-box;
 }
 
+:root {
+    --color-yellow: #ffeb80;
+    --color-grey: #d1d5db;
+    --color-deep-grey: rgb(84, 84, 84);
+
+    --space-small: 0.5rem;
+    --space-medium: 1rem;
+    --space-large: 2rem;
+
+    --default-border-radius: 0.5rem
+
+}
+
 body {
   margin: 0;
   font-family: system-ui, sans-serif;

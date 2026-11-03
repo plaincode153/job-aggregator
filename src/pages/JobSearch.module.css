@@ -1,8 +1,13 @@
 .form {
-    padding: 2rem;
+    padding: 2rem 2rem 0rem 2rem;
     display: flex;
     flex-direction: column;
+}
 
+.dropdown {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .loadMore {

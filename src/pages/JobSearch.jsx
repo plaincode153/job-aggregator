@@ -9,7 +9,9 @@ export function JobSearch() {
     const [jobList, setJobList] = useState([])
     const [error, setError] = useState(false)
     const [hasSearched, setHasSearched] = useState(false);
-    const [selectedRegionID, setSelectedRegionID] = useState("");
+    const [selectedRegionID, setSelectedRegionID] = useState();
+    const [selectedMunicipalityIDs, setSelectedMunicipalityIDs] = useState([]);
+    const [searchVersion, setSearchVersion] = useState(0);
 
     const [offset, setOffset] = useState(0)
     const [hasMore, setHasMore] = useState(false);
@@ -18,20 +20,20 @@ export function JobSearch() {
         event.preventDefault()
         const input = document.getElementById("jobSearch")
 
-        if (query !== input.value) {
             setJobList([])
             setQuery(input.value)
             setOffset(0)
+            setSearchVersion((prev) => prev + 1)
             setHasSearched(true)
+        
         }
-    }
 
     useEffect(() => {
         let ignore = false
 
-        async function getJobs(query, selectedRegionID, offset, setHasMore) {
+        async function getJobs(query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs) {
             try {
-                const data = await jobSearchAPI(query, selectedRegionID, offset, setHasMore)
+                const data = await jobSearchAPI(query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs)
 
                 if (!ignore) {
                     setJobList((prev) => [...prev, ...data.hits])
@@ -42,10 +44,10 @@ export function JobSearch() {
             }
         }
         if (query !== "") {
-            getJobs(query, selectedRegionID, offset, setHasMore)
+            getJobs(query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs)
         }
         return () => ignore = true
-    }, [query, selectedRegionID, offset, setHasMore])
+    }, [query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs, searchVersion])
 
     return (
         <div>
@@ -55,10 +57,10 @@ export function JobSearch() {
                     <input id="jobSearch" type="text"></input>
                     <button type="submit">Submit</button>
                 </div>
-                <div id="Location">
-                    <LocationDropdown setSelectedRegionID={setSelectedRegionID} setOffset={setOffset} setJobList={setJobList} />
-                </div>
             </form>
+            <div className={styles.dropdown} id="Location">
+                    <LocationDropdown selectedRegionID={selectedRegionID} selectedMunicipalityIDs={selectedMunicipalityIDs} setSelectedMunicipalityIDs={setSelectedMunicipalityIDs} setSelectedRegionID={setSelectedRegionID} setOffset={setOffset} setJobList={setJobList} setSearchVersion={setSearchVersion} />
+                </div>
             <p>{error && "Error"}</p>
             {hasSearched && <JobList jobList={jobList} />}
             {hasMore && <button className={styles.loadMore} onClick={() => setOffset((prev) => prev + 20)}>Load More</button>}
