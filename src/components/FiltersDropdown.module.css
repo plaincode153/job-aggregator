@@ -1,0 +1,10 @@
+.trigger {
+    cursor: pointer;
+    border: 1px;
+    background: var(--color-grey);
+    padding: 3px;
+}
+
+.picker {
+    margin-top: var(--space-small);
+}

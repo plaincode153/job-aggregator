@@ -1,13 +1,11 @@
 .picker {
     margin-top: var(--space-small);
-
 }
 
 .trigger {
     cursor: pointer;
     border: 1px;
     background: var(--color-grey);
-    padding: 3px;
 }
 
 .columns {

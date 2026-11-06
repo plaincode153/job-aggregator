@@ -49,16 +49,24 @@ export function LocationDropdown({ selectedRegionID, setSelectedRegionID, setOff
             }
         }
 
+        getRegions()
+        return () => ignore = true
+    }, [])
+
+    useEffect(() => {
+        let ignore = false
+
         async function getMunicipalities(previewRegionID) {
             try {
                 const data = await getMunicipalitiesAPI(previewRegionID)
-                setCurrentMunicipalities(data)
-            } catch {
+                if (!ignore) {
+                    setCurrentMunicipalities(data)
+                }
+            } catch (error) {
                 console.error(`error fetching from getMunicipalities`, error)
             }
         }
 
-        getRegions()
         getMunicipalities(previewRegionID)
         return () => ignore = true
     }, [previewRegionID])
@@ -66,11 +74,11 @@ export function LocationDropdown({ selectedRegionID, setSelectedRegionID, setOff
     return (
         <div className={styles.picker}>
             <button onClick={() => setIsOpen(!isOpen)} className={styles.trigger}>
-                <span>📍 Select your locations</span>
+                <span>Select your locations</span>
                 <span>{isOpen ? "▲" : "▼"}</span>
             </button>
             {isOpen &&
-                <div className="styles.dropdown">
+                <div>
                     <div>
                         <button onClick={clearAllLocations}>Clear all locations</button>
                     </div>
@@ -80,7 +88,7 @@ export function LocationDropdown({ selectedRegionID, setSelectedRegionID, setOff
                                 {regions.map((region) => {
                                     return (
                                         <li>
-                                            <button onMouseEnter={() => setPreviewRegionID(region["taxonomy/id"])}>
+                                            <button onClick={() => setPreviewRegionID(region["taxonomy/id"])}>
                                                 <span>{region["taxonomy/definition"]}</span>
                                             </button>
                                         </li>
