@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { jobSearchAPI } from "../api/api";
 import { LocationDropdown } from "../components/LocationDropdown.jsx";
 import { ProfessionDropdown } from "../components/ProfessionDropdown.jsx";
 import { FiltersDropdown } from "../components/FiltersDropdown.jsx";
 import { JobList } from "../components/JobList.jsx";
-import styles from "./JobSearch.module.css";
 
 export function JobSearch() {
     const [query, setQuery] = useState("")
@@ -19,13 +18,15 @@ export function JobSearch() {
 
     const [offset, setOffset] = useState(0)
     const [hasMore, setHasMore] = useState(false);
+    
+    const jobSearchInputRef = useRef(null)
 
     function handleSubmit(event) {
         event.preventDefault()
-        const input = document.getElementById("jobSearch")
+        const input = jobSearchInputRef.current.value
 
             setJobList([])
-            setQuery(input.value)
+            setQuery(input)
             setOffset(0)
             setSearchVersion((prev) => prev + 1)
             setHasSearched(true)
@@ -55,34 +56,33 @@ export function JobSearch() {
 
     return (
         <div>
-            <form className={styles.form} onSubmit={handleSubmit}>
-                <label htmlFor="jobSearch">Search for jobs here: </label>
+            <form className="mt-2" onSubmit={handleSubmit}>
+                <label className=" block mb-0.5" htmlFor="jobSearch">Search for jobs here: </label>
                 <div>
-                    <input id="jobSearch" type="text"></input>
-                    <button type="submit">Submit</button>
+                    <input ref={jobSearchInputRef} className="border-black border rounded-md py-0.5 pl-1 bg-gray-50 focus-visible:outline-yellow-400" id="jobSearch" type="text"></input>
+                    <button className="border px-2 rounded-md ml-2 py-0.5 bg-gray-50 focus-visible:outline-yellow-400 cursor-pointer" type="submit">Submit</button>
                 </div>
             </form>
-            <div className={styles.dropdowns}>
-                <div className={styles.locationDropdown}>
-                    <LocationDropdown selectedRegionID={selectedRegionID} selectedMunicipalityIDs={selectedMunicipalityIDs} setSelectedMunicipalityIDs={setSelectedMunicipalityIDs} setSelectedRegionID={setSelectedRegionID} setOffset={setOffset} setJobList={setJobList} setSearchVersion={setSearchVersion} />
+            <div className="flex gap-2 my-2 ">
+                <div>
+                    <LocationDropdown selectedRegionID={selectedRegionID} selectedMunicipalityIDs={selectedMunicipalityIDs} setSelectedMunicipalityIDs={setSelectedMunicipalityIDs} setSelectedRegionID={setSelectedRegionID} setOffset={setOffset} setJobList={setJobList} />
                 </div>
-                <div className={styles.professionDropdown}>
+                <div>
                     <ProfessionDropdown
                         setOffset={setOffset}
                         setJobList={setJobList}
-                        setSearchVersion={setSearchVersion}
                         activeGroupIDs={activeGroupIDs}
                         setActiveGroupIDs={setActiveGroupIDs}
                         activeFieldID={activeFieldID}
                         setActiveFieldID={setActiveFieldID} />
                 </div>
-                <div className={styles.filtersDropdown}>
+                <div>
                     <FiltersDropdown />
                 </div>
             </div>
             <p>{error && "Error"}</p>
             {hasSearched && <JobList jobList={jobList} />}
-            {hasMore && <button className={styles.loadMore} onClick={() => setOffset((prev) => prev + 20)}>Load More</button>}
+            {hasMore && <button className="focus-visible:outline-yellow-400 cursor-pointer" onClick={() => setOffset((prev) => prev + 20)}>Load More</button>}
         </div>
     )
 }

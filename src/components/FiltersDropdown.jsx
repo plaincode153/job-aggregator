@@ -1,9 +1,8 @@
-import styles from "./FiltersDropdown.module.css"
 
 export function FiltersDropdown() {
     return (
-        <div className={styles.picker}>
-            <button className={styles.trigger}>Filters</button>
+        <div>
+            <button className="border-black border rounded-md py-0.5 bg-gray-50 focus-visible:outline-yellow-400 cursor-pointer">Filters</button>
         </div>
     )
 }

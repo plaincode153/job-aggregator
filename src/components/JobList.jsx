@@ -1,4 +1,3 @@
-import styles from "./JobList.module.css"
 import fallbackLogo from "../assets/fallbackLogo.png";
 
 export function JobList({ jobList }) {
@@ -6,13 +5,14 @@ export function JobList({ jobList }) {
         return <p>No jobs matched your search. Try different keywords.</p>
     }
     return (
-        <div className={styles.jobList}>
+        <div>
             {jobList.map((job) => {
 
                 return (
-                    <details className={styles.job} key={job.id}>
-                        <summary>
+                    <details key={job.id}>
+                        <summary className="bg-gray-200 my-1 py-1 pl-2 rounded-2xl">
                             <img
+                            className="w-30 h-30 object-contain inline-block "
                                 src={job.logo_url || fallbackLogo}
                                 onError={(event) => {
                                     event.currentTarget.src = fallbackLogo
