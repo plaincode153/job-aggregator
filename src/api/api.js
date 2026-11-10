@@ -1,4 +1,4 @@
-export async function jobSearchAPI(query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs, activeGroupIDs, activeFieldID) {
+export async function jobSearchAPI(query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs, activeGroupIDs, activeFieldID, abroad, remote, hireWorkplace, experience, unspecifiedSwedenWorkplace, drivingLicenseRequired, larling, trainee, franchise, openForAll, sort) {
     const regionFilter = selectedRegionID ? `&region=${selectedRegionID}` : ""
     const occupationFieldFilter = activeFieldID ? `&occupation-field=${activeFieldID}` : ""
     const municipalityFilter = selectedMunicipalityIDs.length > 0   
@@ -7,7 +7,20 @@ export async function jobSearchAPI(query, selectedRegionID, offset, setHasMore, 
     const occupationGroupFilter = activeGroupIDs.length > 0
         ? activeGroupIDs.map((groupID) => `&occupation-group=${groupID}`).join("")
         : ""
-    const response = await fetch(`https://jobsearch.api.jobtechdev.se/search?q=${query}&offset=${offset}&limit=20${regionFilter}${municipalityFilter}${occupationGroupFilter}${occupationFieldFilter}`)
+
+    const traineeFilter = trainee === "" ? "" : `&trainee=${trainee}`
+    const remoteFilter = remote === "" ? "" : `&remote=${remote}`
+    const larlingFilter = larling === "" ? "" : `&larling=${larling}`
+    const franchiseFilter = franchise === "" ? "" : `&franchise=${franchise}`
+    const hireWorkplaceFilter = hireWorkplace === "" ? "" : `&hire-work-place=${hireWorkplace}`
+    const drivingLicenseRequiredFilter = drivingLicenseRequired === "" ? "" : `&driving-license-required=${drivingLicenseRequired}`
+    const experienceFilter = experience === "" ? "" : `&experience=${experience}`
+    const openForAllFilter = openForAll === "" ? "" : `&open_for_all=${openForAll}`
+    const abroadFilter = abroad ? "&abroad=true" : ""
+    const unspecifiedSwedenWorkplaceFilter = unspecifiedSwedenWorkplace ? "&unspecified-sweden-workplace=true" : ""
+    const sortFilter = sort === "" ? "" : `&sort=${sort}`
+
+    const response = await fetch(`https://jobsearch.api.jobtechdev.se/search?q=${query}&offset=${offset}&limit=20${regionFilter}${municipalityFilter}${occupationGroupFilter}${occupationFieldFilter}${traineeFilter}${remoteFilter}${larlingFilter}${franchiseFilter}${hireWorkplaceFilter}${drivingLicenseRequiredFilter}${experienceFilter}${openForAllFilter}${abroadFilter}${unspecifiedSwedenWorkplaceFilter}${sortFilter}`)
     if (!response.ok) {
         throw new Error("Failed to fetch jobs")
     }

@@ -102,6 +102,7 @@ export function ProfessionDropdown({ setOffset, setJobList, activeGroupIDs, setA
     }
 
     function handleClearAllSelections() {
+        setOffset(0)
         setJobList([])
         setActiveFieldID()
         setActiveGroupIDs([])

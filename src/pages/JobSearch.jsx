@@ -16,6 +16,18 @@ export function JobSearch() {
     const [activeFieldID, setActiveFieldID] = useState();
     const [searchVersion, setSearchVersion] = useState(0);
 
+    const [abroad, setAbroad] = useState(false)
+    const [remote, setRemote] = useState("")
+    const [hireWorkplace, setHireWorkplace] = useState("")
+    const [experience, setExperience] = useState("")
+    const [unspecifiedSwedenWorkplace, setUnspecifiedSwedenWorkplace] = useState(false)
+    const [drivingLicenseRequired, setDrivingLicenseRequired] = useState("")
+    const [larling, setLarling] = useState("")
+    const [trainee, setTrainee] = useState("")
+    const [franchise, setFranchise] = useState("")
+    const [openForAll, setOpenForAll] = useState("")
+    const [sort, setSort] = useState("")
+
     const [offset, setOffset] = useState(0)
     const [hasMore, setHasMore] = useState(false);
     
@@ -36,9 +48,9 @@ export function JobSearch() {
     useEffect(() => {
         let ignore = false
 
-        async function getJobs(query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs, activeGroupIDs, activeFieldID) {
+        async function getJobs(query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs, activeGroupIDs, activeFieldID, abroad, remote, hireWorkplace, experience, unspecifiedSwedenWorkplace, drivingLicenseRequired, larling, trainee, franchise, openForAll, sort) {
             try {
-                const data = await jobSearchAPI(query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs, activeGroupIDs, activeFieldID)
+                const data = await jobSearchAPI(query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs, activeGroupIDs, activeFieldID, abroad, remote, hireWorkplace, experience, unspecifiedSwedenWorkplace, drivingLicenseRequired, larling, trainee, franchise, openForAll, sort)
 
                 if (!ignore) {
                     setJobList((prev) => [...prev, ...data.hits])
@@ -49,10 +61,10 @@ export function JobSearch() {
             }
         }
         if (query !== "") {
-            getJobs(query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs, activeGroupIDs, activeFieldID)
+            getJobs(query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs, activeGroupIDs, activeFieldID, abroad, remote, hireWorkplace, experience, unspecifiedSwedenWorkplace, drivingLicenseRequired, larling, trainee, franchise, openForAll, sort)
         }
         return () => ignore = true
-    }, [query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs, searchVersion, activeGroupIDs, activeFieldID])
+    }, [query, selectedRegionID, offset, setHasMore, selectedMunicipalityIDs, searchVersion, activeGroupIDs, activeFieldID, abroad, remote, hireWorkplace, experience, unspecifiedSwedenWorkplace, drivingLicenseRequired, larling, trainee, franchise, openForAll, sort])
 
     return (
         <div>
@@ -77,12 +89,37 @@ export function JobSearch() {
                         setActiveFieldID={setActiveFieldID} />
                 </div>
                 <div>
-                    <FiltersDropdown />
+                    <FiltersDropdown
+                        setJobList={setJobList}
+                        setOffset={setOffset}
+                        abroad={abroad}
+                        setAbroad={setAbroad}
+                        remote={remote}
+                        setRemote={setRemote}
+                        hireWorkplace={hireWorkplace}
+                        setHireWorkplace={setHireWorkplace}
+                        experience={experience}
+                        setExperience={setExperience}
+                        unspecifiedSwedenWorkplace={unspecifiedSwedenWorkplace}
+                        setUnspecifiedSwedenWorkplace={setUnspecifiedSwedenWorkplace}
+                        drivingLicenseRequired={drivingLicenseRequired}
+                        setDrivingLicenseRequired={setDrivingLicenseRequired}
+                        larling={larling}
+                        setLarling={setLarling}
+                        trainee={trainee}
+                        setTrainee={setTrainee}
+                        franchise={franchise}
+                        setFranchise={setFranchise}
+                        openForAll={openForAll}
+                        setOpenForAll={setOpenForAll}
+                        setSort={setSort}
+                        sort={sort}
+                    />
                 </div>
             </div>
             <p>{error && "Error"}</p>
             {hasSearched && <JobList jobList={jobList} />}
-            {hasMore && <button className="focus-visible:outline-yellow-400 cursor-pointer" onClick={() => setOffset((prev) => prev + 20)}>Load More</button>}
+            {hasMore && <button className="bg-amber-100 px-3 py-2 my-4 font-medium border-black border-1 rounded-md focus-visible:outline-yellow-400 cursor-pointer" onClick={() => setOffset((prev) => prev + 20)}>Load More</button>}
         </div>
     )
 }

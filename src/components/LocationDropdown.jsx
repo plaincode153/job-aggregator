@@ -187,7 +187,7 @@ export function LocationDropdown({ selectedRegionID, setSelectedRegionID, setOff
                                 <button
                                     ref={clearButtonRef}
                                     onKeyDown={handleRegionNavigation}
-                                    className="my-0.5 border rounded-md px-1 bg-red-100 focus-visible:outline-yellow-400 cursor-pointer"
+                                    className="my-0.5 border rounded-md px-1 bg-amber-100 focus-visible:outline-yellow-400 cursor-pointer"
                                     onClick={clearAllLocations}>Clear all locations</button>
                             </li>
                             {regions.map((region) => {
