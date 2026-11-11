@@ -4,6 +4,7 @@ import './index.css'
 import { createBrowserRouter, RouterProvider, Link } from "react-router"
 import Layout from './Layout.jsx'
 import { JobSearch } from './pages/JobSearch.jsx'
+import { SavedJobs } from './components/SavedJobs.jsx'
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <JobSearch />
+      },
+      {
+        element: <SavedJobs />,
+        path: "saved-jobs"
       }
     ]
   }
